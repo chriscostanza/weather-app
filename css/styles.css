@@ -1,0 +1,17 @@
+body {
+    background-color: #011638;
+}
+
+.card {
+    width: 320px;
+    text-align: center;
+    background-color: #6B818C;
+    border: none;
+}
+
+.wi {
+    font-size: 100px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    color: white;
+}
