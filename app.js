@@ -12,7 +12,6 @@ const getWeather = async (city, state) => {
     return weather
 }
 
-
 const makeCard = (weather) => {
     const newCard = document.createElement('DIV');
     newCard.classList = "card mb-3 mx-3"
@@ -23,7 +22,7 @@ const makeCard = (weather) => {
     const description = document.createElement('H5');
     description.classList = "card-title"
     
-    const city = document.createElement('H5');
+    const city = document.createElement('H4');
     city.classList = "card-title"
     
     const temp = document.createElement('H2');
@@ -34,9 +33,11 @@ const makeCard = (weather) => {
     const weatherCode = weather.data.weather[0].id 
 
     const button = document.createElement('BUTTON');
-    button.classList = "btn btn-danger btn-sm"
-    button.append('Delete')
+    const cityName = weather.data.name
+    button.classList = "btn btn-outline-light btn-sm mt-3 px-4"
+    button.append('Remove')
     button.addEventListener('click', (e) => {
+        localStorage.removeItem(cityName)
         button.parentElement.parentElement.remove()
     })
     
@@ -46,8 +47,6 @@ const makeCard = (weather) => {
     temp.innerHTML = `${Math.round(weather.data.main.temp)}&#176;`
     city.append(weather.data.name);
    
-
-
     cardBody.append(description)
     cardBody.append(graphic)
     cardBody.append(temp)
@@ -55,7 +54,7 @@ const makeCard = (weather) => {
     cardBody.append(button)
     
     newCard.append(cardBody);
-    weatherCards.append(newCard)
+    weatherCards.append(newCard);
 }
 
 cityState.addEventListener('submit', async (event) => {
@@ -63,5 +62,16 @@ cityState.addEventListener('submit', async (event) => {
     const city = cityState.elements.city.value
     const state = cityState.elements.state.value
     const weather = await getWeather(city,state);
+    localStorage.setItem(`${weather.data.name}`,`${state}`)
     makeCard(weather);
 })
+const populate = async () =>{
+    for (let item of Object.entries(localStorage)) {
+        const weather = await getWeather(item[0],item[1])
+        makeCard(weather);
+    }
+} 
+
+populate();
+
+
